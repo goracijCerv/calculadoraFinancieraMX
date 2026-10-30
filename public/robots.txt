@@ -1,9 +1,7 @@
-# robots.txt de CalculaFácil (tarea 23.1, Req 1.1, 1.3)
+# robots.txt de Chécalo (tarea 23.1, Req 1.1, 1.3)
 # Permite el rastreo completo del sitio y referencia el sitemap.
-# NOTA: el dominio es provisional; actualiza la URL del Sitemap al dominio
-# definitivo cuando se despliegue (PLAN 0.2 / 4.5).
 
 User-agent: *
 Allow: /
 
-Sitemap: https://calculafacil.mx/sitemap.xml
+Sitemap: https://checalo.pages.dev/sitemap.xml
