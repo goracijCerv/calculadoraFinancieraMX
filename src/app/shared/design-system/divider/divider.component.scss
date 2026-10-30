@@ -1,0 +1,18 @@
+// DividerComponent — divisor de 1px en color de bordes #E5E0E2 (Req 9.4).
+// Usa el token --rule-color (bordes de marca). SCSS puro, sin efectos.
+
+:host {
+  display: block;
+  border: 0;
+  border-top: var(--rule-width) solid var(--rule-color);
+  width: 100%;
+}
+
+:host(.app-divider--vertical) {
+  display: inline-block;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  border-top: 0;
+  border-left: var(--rule-width) solid var(--rule-color);
+}

@@ -1,0 +1,9 @@
+<span
+  class="skeleton"
+  [class.skeleton--text]="variant() === 'text'"
+  [class.skeleton--title]="variant() === 'title'"
+  [class.skeleton--amount]="variant() === 'amount'"
+  [class.skeleton--block]="variant() === 'block'"
+  [style.width]="width()"
+  [style.height]="variant() === 'block' ? height() : null"
+></span>

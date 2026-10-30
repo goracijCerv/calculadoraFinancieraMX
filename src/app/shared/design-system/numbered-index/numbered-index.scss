@@ -1,0 +1,14 @@
+// Número de línea del índice (Req 1.3, 9.5).
+
+:host {
+  display: inline-block;
+}
+
+.numbered-index {
+  font-family: var(--font-figures);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: var(--line-height-tight);
+  color: inherit;
+}

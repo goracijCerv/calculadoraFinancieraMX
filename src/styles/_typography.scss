@@ -1,0 +1,70 @@
+// Tipografía: Playfair Display (títulos/acento) e Inter (UI) (Req 9.2).
+// La carga de las familias (self-host o Google Fonts con display=swap) es
+// responsabilidad de la tarea 2.2; aquí se definen únicamente las reglas base
+// que consumen los tokens tipográficos de `_tokens.scss`.
+
+html {
+  font-size: 100%; // respeta el tamaño base del navegador (accesibilidad)
+}
+
+body {
+  font-family: var(--font-ui); // Inter para toda la UI por defecto
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+// Títulos y elementos de acento → Playfair Display.
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--font-size-2xl);
+  color: var(--text-accent); // títulos de página en vino
+}
+
+h2 {
+  font-size: var(--font-size-xl);
+}
+
+h3 {
+  font-size: var(--font-size-lg);
+}
+
+h4 {
+  font-size: var(--font-size-md);
+}
+
+p {
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+small {
+  font-size: var(--font-size-sm);
+}
+
+a {
+  color: var(--text-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+// Controles de formulario heredan la tipografía de UI (Inter).
+input,
+button,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}

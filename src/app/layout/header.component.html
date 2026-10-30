@@ -1,0 +1,28 @@
+<header class="app-header">
+  <div class="app-header__inner">
+    <a class="app-header__brand" routerLink="/" aria-label="Chécalo, ir al inicio">
+      Chécalo
+    </a>
+
+    <nav class="app-header__nav" aria-label="Navegación principal">
+      <ul class="app-header__list">
+        @for (link of links; track link.path) {
+          <li>
+            <a
+              class="app-header__link"
+              [routerLink]="link.path"
+              routerLinkActive="is-active"
+              [routerLinkActiveOptions]="{ exact: link.exact }"
+              #rla="routerLinkActive"
+              [attr.aria-current]="rla.isActive ? 'page' : null"
+            >
+              {{ link.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <app-theme-toggle class="app-header__theme" />
+  </div>
+</header>

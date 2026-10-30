@@ -1,0 +1,21 @@
+<footer class="app-footer">
+  <div class="app-footer__inner">
+    <nav class="app-footer__links" aria-label="Enlaces del pie de página">
+      <a
+        class="app-footer__link app-footer__link--donate"
+        [href]="donationHref"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <app-icon class="app-footer__icon" name="heart" [size]="16" />
+        <span>Donar</span>
+      </a>
+
+      <a class="app-footer__link" routerLink="/privacidad">
+        Política de privacidad
+      </a>
+    </nav>
+
+    <app-fiscal-year-banner class="app-footer__fiscal-year" [currentYear]="currentYear" />
+  </div>
+</footer>

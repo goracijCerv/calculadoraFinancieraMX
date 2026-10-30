@@ -1,0 +1,255 @@
+# Constants_Update_Workflow — actualización asistida de constantes fiscales (Req 16).
+#
+# Qué hace (design.md §"Constants Update Workflow (CI)"):
+#   - Se dispara de forma PROGRAMADA (schedule, cron mensual) sin intervención
+#     manual (Req 16.1) y admite disparo manual (workflow_dispatch) solo para
+#     pruebas.
+#   - Ejecuta el script versionado scripts/update-fiscal-constants.ts (tarea
+#     27.1) que consulta >=2 fuentes oficiales, reconcilia, valida la sanidad
+#     y genera el archivo fiscal-constants.<año>.ts propuesto + el diff + el
+#     cuerpo del PR. Todo vive en el repo y en CI; no hay backend en runtime ni
+#     dependencias externas al repositorio (Req 16.11).
+#   - Abre un Pull Request con el diff propuesto. NO cambia el provider del año
+#     vigente en src/app/app.config.ts: eso lo hace un humano al aprobar
+#     (Req 16.10).
+#   - Si una validación de sanidad falla, deja el PR BLOQUEADO con la alerta
+#     visible: label `blocked` + una verificación requerida que termina en
+#     fallo + el detalle del error en la descripción del PR (Req 16.6).
+#   - Ejecuta las pruebas de ejemplo contra fuentes oficiales (los casos de
+#     docs/formulas.md, archivos *.example.spec.ts) + las pruebas del script
+#     como CHECK REQUERIDO; si fallan, bloquea el merge (Req 16.8, 16.9).
+#
+# IMPORTANTE — configuración que NO vive en este archivo (va en los ajustes
+# del repositorio, no en código):
+#   La exigencia de "no auto-merge" + "revisión y aprobación humana" + "checks
+#   requeridos" (Req 16.9, 16.10) se garantiza con la PROTECCIÓN DE RAMA de
+#   `main` en Settings → Branches → Branch protection rules:
+#     - Require a pull request before merging  → Require approvals: >= 1
+#     - Require status checks to pass before merging, marcando como requeridos:
+#         * "Puertas de calidad del PR (pruebas de ejemplo)"  (job quality-gate)
+#         * "Gate de sanidad (bloquea si falla)"              (job sanity-gate)
+#     - Dismiss stale approvals / Require review from Code Owners (opcional).
+#     - Do NOT enable auto-merge for esta rama.
+#   GitHub Actions no puede configurar branch protection desde el workflow; por
+#   eso se documenta aquí para que quien administre el repo lo active una vez.
+
+name: Actualización asistida de constantes fiscales
+
+on:
+  # Operación normal: automática y recurrente, sin intervención manual (Req 16.1).
+  # Minuto 0, hora 06:00 UTC, día 1 de cada mes.
+  schedule:
+    - cron: '0 6 1 * *'
+  # Disparo manual solo para pruebas (Req 16.1).
+  workflow_dispatch:
+    inputs:
+      fiscalYear:
+        description: 'Año fiscal a proponer (por defecto: año actual + 1).'
+        required: false
+        type: string
+
+# El workflow abre un PR y publica un check de estado del commit.
+permissions:
+  contents: write
+  pull-requests: write
+  checks: write
+  statuses: write
+
+concurrency:
+  group: update-fiscal-constants
+  cancel-in-progress: false
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 1) Propone las constantes y abre (o actualiza) el PR con el diff.
+  # ---------------------------------------------------------------------------
+  propose:
+    name: Propuesta de constantes y creación del PR
+    runs-on: ubuntu-latest
+    outputs:
+      fiscal_year: ${{ steps.run_script.outputs.fiscal_year }}
+      file_name: ${{ steps.run_script.outputs.file_name }}
+      blocked: ${{ steps.run_script.outputs.blocked }}
+      requires_manual_review: ${{ steps.run_script.outputs.requires_manual_review }}
+      branch: ${{ steps.vars.outputs.branch }}
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias (solo del repo, Req 16.11)
+        run: npm ci
+
+      - name: Calcular variables derivadas
+        id: vars
+        run: |
+          YEAR="${{ github.event.inputs.fiscalYear }}"
+          if [ -z "$YEAR" ]; then
+            YEAR="$(( $(date -u +%Y) + 1 ))"
+          fi
+          echo "fiscal_year=$YEAR" >> "$GITHUB_OUTPUT"
+          echo "branch=bot/fiscal-constants-$YEAR" >> "$GITHUB_OUTPUT"
+
+      - name: Ejecutar el script de verificación (Req 16.2-16.7)
+        id: run_script
+        env:
+          FISCAL_YEAR: ${{ steps.vars.outputs.fiscal_year }}
+        run: |
+          # Runner CI-only: usa EXCLUSIVAMENTE las funciones exportadas por
+          # scripts/update-fiscal-constants.ts (tarea 27.1). No vive en src/,
+          # no entra al build de la app ni a `ng lint`; es efímero del runner.
+          #
+          # En CI real, las implementaciones de SourceFetcher consultan las
+          # publicaciones oficiales (DOF/SAT). Aquí se dejan como punto de
+          # extensión: el administrador del repo añade los fetchers reales en
+          # scripts/ (p.ej. scripts/sources/*.ts) y los importa abajo. Mientras
+          # no existan, el workflow falla de forma explícita y visible para no
+          # abrir un PR con datos inventados.
+          mkdir -p .ci
+          cat > .ci/run-update.ts <<'TS'
+          import { writeFileSync } from 'node:fs';
+          import {
+            runUpdate,
+            PREVIOUS_CONSTANTS,
+            type FiscalValueKey,
+            type SourceFetcher,
+          } from '../scripts/update-fiscal-constants';
+
+          const fiscalYear = Number(process.env.FISCAL_YEAR);
+          if (!Number.isInteger(fiscalYear)) {
+            throw new Error(`FISCAL_YEAR inválido: ${process.env.FISCAL_YEAR}`);
+          }
+
+          // Punto de extensión: fetchers oficiales (>=2, Req 16.2). El repo debe
+          // proveer las implementaciones reales (DOF, SAT, ...). Se importan
+          // dinámicamente para que la ausencia sea un fallo claro y visible.
+          async function loadFetchers(): Promise<readonly SourceFetcher[]> {
+            try {
+              const mod = await import('../scripts/sources/official-fetchers');
+              return mod.OFFICIAL_FETCHERS as readonly SourceFetcher[];
+            } catch {
+              throw new Error(
+                'No hay fetchers oficiales en scripts/sources/official-fetchers.ts. ' +
+                  'Agrega al menos dos SourceFetcher (DOF y SAT) antes de ejecutar el workflow (Req 16.2).',
+              );
+            }
+          }
+
+          const sourceRefs = PREVIOUS_CONSTANTS.sourceRefs;
+          // Enlaces por valor para el diff (Req 16.7); los provee el mismo módulo.
+          async function loadSourceUrls(): Promise<Record<FiscalValueKey, readonly string[]>> {
+            const mod = await import('../scripts/sources/official-fetchers');
+            return mod.SOURCE_URLS_BY_KEY as Record<FiscalValueKey, readonly string[]>;
+          }
+
+          const now = new Date().toISOString().slice(0, 10);
+          const proposal = await runUpdate({
+            fetchers: await loadFetchers(),
+            fiscalYear,
+            previous: PREVIOUS_CONSTANTS,
+            effectiveFrom: `${fiscalYear}-01-01`,
+            lastVerified: now,
+            sourceRefs,
+            sourceUrlsByKey: await loadSourceUrls(),
+          });
+
+          // Materializa el archivo propuesto dentro del Constants_Module (Req 16.7).
+          const targetDir = 'src/app/core/constants';
+          writeFileSync(`${targetDir}/${proposal.fileName}`, proposal.fileContents, 'utf8');
+
+          // Cuerpo del PR y flags para los pasos siguientes.
+          writeFileSync('.ci/pr-body.md', proposal.body, 'utf8');
+
+          const out = process.env.GITHUB_OUTPUT!;
+          const appendFileSync = (k: string, v: string) =>
+            writeFileSync(out, `${k}=${v}\n`, { flag: 'a' });
+          appendFileSync('fiscal_year', String(proposal.fiscalYear));
+          appendFileSync('file_name', proposal.fileName);
+          appendFileSync('blocked', String(proposal.blocked));
+          appendFileSync('requires_manual_review', String(proposal.requiresManualReview));
+          TS
+          npx tsx .ci/run-update.ts
+          rm -rf .ci/run-update.ts
+
+      - name: Preparar labels del PR
+        id: labels
+        run: |
+          LABELS="constantes-fiscales,automated"
+          if [ "${{ steps.run_script.outputs.blocked }}" = "true" ]; then
+            LABELS="$LABELS,blocked"
+          fi
+          if [ "${{ steps.run_script.outputs.requires_manual_review }}" = "true" ]; then
+            LABELS="$LABELS,requiere-revision-manual"
+          fi
+          echo "labels=$LABELS" >> "$GITHUB_OUTPUT"
+
+      - name: Crear o actualizar el Pull Request (sin auto-merge, Req 16.10)
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: ${{ steps.vars.outputs.branch }}
+          base: main
+          # Solo se versiona el archivo de constantes propuesto; el provider del
+          # año vigente (app.config.ts) NO se toca (Req 16.10).
+          add-paths: |
+            src/app/core/constants/${{ steps.run_script.outputs.file_name }}
+          commit-message: 'chore(constants): propuesta de constantes fiscales ${{ steps.run_script.outputs.fiscal_year }}'
+          title: 'Constantes fiscales ${{ steps.run_script.outputs.fiscal_year }} (revisión humana requerida)'
+          body-path: .ci/pr-body.md
+          labels: ${{ steps.labels.outputs.labels }}
+          draft: ${{ steps.run_script.outputs.blocked == 'true' }}
+          delete-branch: false
+
+  # ---------------------------------------------------------------------------
+  # 2) Gate de sanidad: si la validación de sanidad falló, este job FALLA, lo
+  #    que hace fallar la verificación requerida y deja el PR bloqueado de forma
+  #    visible (Req 16.6). El label `blocked` y el detalle ya están en el PR.
+  # ---------------------------------------------------------------------------
+  sanity-gate:
+    name: Gate de sanidad (bloquea si falla)
+    runs-on: ubuntu-latest
+    needs: propose
+    steps:
+      - name: Verificar resultado de las validaciones de sanidad (Req 16.6)
+        run: |
+          if [ "${{ needs.propose.outputs.blocked }}" = "true" ]; then
+            echo "::error::Las validaciones de sanidad fallaron (Req 16.5). El PR queda BLOQUEADO (Req 16.6). Revisa la descripción del PR para el detalle."
+            exit 1
+          fi
+          echo "Validaciones de sanidad superadas (Req 16.5)."
+
+  # ---------------------------------------------------------------------------
+  # 3) Puertas de calidad del PR: ejecuta las pruebas de ejemplo contra fuentes
+  #    oficiales (docs/formulas.md) sobre los valores propuestos, más las
+  #    pruebas del script. Es un CHECK REQUERIDO; si falla, bloquea el merge
+  #    (Req 16.8, 16.9).
+  # ---------------------------------------------------------------------------
+  quality-gate:
+    name: Puertas de calidad del PR (pruebas de ejemplo)
+    runs-on: ubuntu-latest
+    needs: propose
+    steps:
+      - name: Checkout de la rama propuesta
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.propose.outputs.branch }}
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias (solo del repo, Req 16.11)
+        run: npm ci
+
+      - name: Pruebas de ejemplo contra fuentes oficiales (Req 16.8, 16.9)
+        # Los casos de referencia de docs/formulas.md viven en *.example.spec.ts;
+        # se ejecutan sobre los valores propuestos. Se añaden las pruebas del
+        # script de verificación (tarea 27.3). El modo no interactivo evita que
+        # el runner quede a la espera (--run / --no-watch).
+        run: npx vitest run "src/**/*.example.spec.ts" "scripts/**/*.spec.ts"

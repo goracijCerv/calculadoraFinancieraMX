@@ -1,0 +1,10 @@
+@if (showYear()) {
+  <p class="fiscal-year-banner__year">
+    Valores del año fiscal
+    <span class="fiscal-year-banner__year-value">{{ fiscalYear() }}</span>
+  </p>
+}
+
+@if (isStale()) {
+  <p class="fiscal-year-banner__warning" role="note">{{ warningText }}</p>
+}

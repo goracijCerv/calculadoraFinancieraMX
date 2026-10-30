@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <title>Chécalo</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#782f40">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="favicon.svg">
+  <!-- SEO base: el SeoService (tarea 23.1) sobrescribe estas etiquetas por ruta
+       en cada navegación (meta description + Open Graph). Se dejan valores por
+       defecto del sitio para la primera carga y para crawlers sin JS. -->
+  <meta name="description" content="Calculadoras laborales y fiscales gratuitas para México: finiquito, liquidación, aguinaldo, vacaciones, ISR y más. Cálculo instantáneo en tu navegador, sin registro.">
+  <meta property="og:site_name" content="Chécalo">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Chécalo — Tus derechos también cuentan">
+  <meta property="og:description" content="Calculadoras laborales y fiscales gratuitas para México. Cálculo instantáneo en tu navegador, sin registro.">
+  <meta property="og:locale" content="es_MX">
+  <!-- Tipografías del sistema de diseño: exclusivamente Playfair Display (títulos/acento)
+       e Inter (UI). Carga con display=swap para evitar texto invisible (FOIT).
+       Pesos acotados a los que realmente usa el Design_System (Req 11.1):
+       Inter 400/500/600 e Playfair Display 600/700; así reducimos la descarga.
+       `preconnect` abre las conexiones a Google Fonts (CSS) y gstatic (archivos
+       de fuente, con `crossorigin`) antes de solicitar la hoja. La hoja se carga
+       sin bloquear el render con el patrón `media="print" onload`, con respaldo
+       en <noscript> para navegadores sin JavaScript. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Schibsted+Grotesk:wght@400;500;600;800&display=swap"
+    media="print"
+    onload="this.media='all'">
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Schibsted+Grotesk:wght@400;500;600;800&display=swap">
+  </noscript>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>

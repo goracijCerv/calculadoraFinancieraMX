@@ -1,0 +1,10 @@
+<section class="hero-result" [attr.aria-label]="ariaLabel()">
+  <span class="hero-result__filete" aria-hidden="true"></span>
+  <p class="hero-result__label">{{ label() }}</p>
+  <p class="hero-result__amount" aria-hidden="true">
+    <span class="hero-result__currency">{{ parts().currency }}</span
+    ><span class="hero-result__integer">{{ parts().integer }}</span
+    ><span class="hero-result__fraction">{{ parts().fraction }}</span
+    >@if (parts().suffix) {<span class="hero-result__suffix">{{ parts().suffix }}</span>}
+  </p>
+</section>

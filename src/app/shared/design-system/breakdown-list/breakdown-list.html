@@ -1,0 +1,17 @@
+<dl class="breakdown-list">
+  @for (item of items(); track $index; let last = $last) {
+    <div class="breakdown-list__row">
+      <dt class="breakdown-list__concept">{{ item.concept }}</dt>
+      <dd class="breakdown-list__amount">
+        @if (unit() === 'days') {
+          {{ item.amount | number: '1.0-0' : locale() }} {{ item.amount === 1 ? 'día' : 'días' }}
+        } @else {
+          {{ item.amount | currency: currencyCode() : currencyDisplay() : digitsInfo() : locale() }}
+        }
+      </dd>
+    </div>
+    @if (!last) {
+      <app-divider />
+    }
+  }
+</dl>

@@ -1,0 +1,105 @@
+<section class="calculator-page">
+  <header class="calculator-page__header">
+    <h1 class="calculator-page__title">{{ config().name }}</h1>
+    <p class="calculator-page__description">{{ config().description }}</p>
+  </header>
+
+  @if (showError()) {
+    <app-error-state
+      title="No se pudo calcular"
+      [message]="currentError() ?? ''"
+      retryLabel="Editar datos"
+      (retry)="onRetry()"
+    />
+  } @else if (showResult()) {
+    <div class="calculator-page__result">
+      <div class="calculator-page__main">
+        <app-hero-result [amount]="currentResult()!.total" [label]="resultLabel()" [unit]="resultUnit()" />
+
+        <app-fiscal-year-banner
+          class="calculator-page__staleness"
+          [currentYear]="currentYear"
+          [showWarningOnly]="true"
+        />
+
+        <h2 class="calculator-page__subtitle">Desglose</h2>
+        <app-breakdown-list [items]="currentResult()!.breakdown" [unit]="resultUnit()" />
+      </div>
+
+      <div class="calculator-page__side">
+        <h2 class="calculator-page__subtitle">Cómo se calcula</h2>
+        <p class="calculator-page__explanation">{{ config().explanation }}</p>
+
+        @if (config().criteriaNote; as note) {
+          <p class="calculator-page__note">{{ note }}</p>
+        }
+
+        @if (currentReceipt(); as receipt) {
+          <app-receipt-detail [folio]="receipt.folio" [date]="receipt.date" />
+        }
+
+        <app-legal-notice />
+
+        <div class="calculator-page__actions">
+          <app-button type="button" variant="secondary" (click)="onEdit()">
+            Editar datos
+          </app-button>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <form class="calculator-page__form" [formGroup]="form()" (ngSubmit)="onSubmit()">
+      @for (field of config().fields; track field.key) {
+        @if (field.type === 'boolean') {
+          <label class="calculator-page__checkbox">
+            <input
+              type="checkbox"
+              [formControlName]="field.key"
+              class="calculator-page__checkbox-input"
+            />
+            <span class="calculator-page__checkbox-label">{{ field.label }}</span>
+          </label>
+          @if (field.helpText) {
+            <p class="calculator-page__field-help">{{ field.helpText }}</p>
+          }
+        } @else if (isSelect(field)) {
+          <div class="calculator-page__field">
+            <label class="calculator-page__select-label" [attr.for]="selectId(field)">
+              {{ field.label }}@if (field.required) {<span aria-hidden="true"> *</span>}
+            </label>
+            <select
+              class="calculator-page__select"
+              [id]="selectId(field)"
+              [formControlName]="field.key"
+              [attr.aria-describedby]="field.helpText ? selectId(field) + '-help' : null"
+            >
+              @for (option of field.options ?? []; track option.value) {
+                <option [value]="option.value">{{ option.label }}</option>
+              }
+            </select>
+            @if (field.helpText) {
+              <p class="calculator-page__field-help" [id]="selectId(field) + '-help'">
+                {{ field.helpText }}
+              </p>
+            }
+          </div>
+        } @else {
+          <app-form-field
+            [formControlName]="field.key"
+            [label]="field.label"
+            [type]="nativeType(field)"
+            [helpText]="field.helpText ?? ''"
+            [required]="field.required"
+            [errorMessage]="fieldError(field)"
+          />
+        }
+      }
+
+      <div class="calculator-page__actions">
+        <app-button type="submit" variant="primary" [disabled]="calculationBlocked()">
+          Calcular
+        </app-button>
+      </div>
+    </form>
+  }
+</section>

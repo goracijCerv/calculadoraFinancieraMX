@@ -1,0 +1,56 @@
+// FooterComponent — pie de página (Req 15.2, 15.3). Sin desbordes (Req 11.3).
+
+.app-footer {
+  width: 100%;
+  border-top: var(--rule-width) solid var(--border);
+  background-color: var(--surface-base);
+}
+
+.app-footer__inner {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0;
+  padding: var(--space-5);
+  padding-left: calc(var(--space-5) + var(--space-7));
+}
+
+.app-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.app-footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.app-footer__link--donate {
+  color: var(--text-primary);
+}
+
+.app-footer__fiscal-year {
+  display: block;
+  margin-top: var(--space-4);
+}
+
+.app-footer__icon {
+  display: inline-flex;
+}
+
+@media (max-width: 47.9375rem) {
+  .app-footer__inner {
+    padding-left: calc(var(--space-3) + var(--space-5));
+  }
+}

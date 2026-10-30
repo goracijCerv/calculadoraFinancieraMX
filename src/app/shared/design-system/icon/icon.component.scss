@@ -1,0 +1,19 @@
+// IconComponent — SVG inline Lucide con currentColor (Req 9.2, 9.6).
+// Sin color propio: hereda el token vigente del tema. Sin efectos excluidos.
+
+:host {
+  display: inline-flex;
+  // El color del icono proviene del contexto (currentColor). No se fija aquí
+  // ningún color de marca para respetar el tema claro/oscuro (Req 10.6).
+  line-height: 0;
+}
+
+.app-icon {
+  display: block;
+  // Alineación óptica con el texto adyacente.
+  vertical-align: middle;
+  // Hereda el color del contenedor; el trazo usa currentColor.
+  color: inherit;
+  // El reset global pone `svg { fill: currentColor }`; los iconos Lucide son de trazo.
+  fill: none;
+}

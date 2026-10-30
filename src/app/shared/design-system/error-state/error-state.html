@@ -1,0 +1,9 @@
+<section class="error-state" role="alert" aria-live="assertive">
+  @if (title(); as heading) {
+    <p class="error-state__title">{{ heading }}</p>
+  }
+  <p class="error-state__message">{{ message() }}</p>
+  <app-button variant="primary" type="button" (click)="onRetry()">
+    {{ retryLabel() }}
+  </app-button>
+</section>

@@ -1,0 +1,53 @@
+// BreakdownListComponent — desglose como renglones de libro contable (Req 9.4).
+// Concepto, puntos guía e importe en columna de cifras.
+
+:host {
+  display: block;
+}
+
+.breakdown-list {
+  margin: 0;
+  padding: 0;
+}
+
+.breakdown-list__row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+}
+
+.breakdown-list ::ng-deep app-divider {
+  border-top-color: var(--rule-soft);
+}
+
+.breakdown-list__concept {
+  margin: 0;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: baseline;
+  min-width: 0;
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+
+  // Puntos guía hasta el importe.
+  &::after {
+    content: '';
+    flex: 1 1 1rem;
+    margin-inline: var(--space-2);
+    border-bottom: 2px dotted var(--rule-strong);
+    transform: translateY(-0.25em);
+  }
+}
+
+.breakdown-list__amount {
+  margin: 0;
+  font-family: var(--font-figures);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

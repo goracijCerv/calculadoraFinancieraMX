@@ -1,0 +1,17 @@
+<article class="privacy">
+  <header class="privacy__header">
+    <h1 class="privacy__title">Política de privacidad</h1>
+    <p class="privacy__lead">
+      Cómo se maneja tu información cuando usas las calculadoras del sitio.
+    </p>
+  </header>
+
+  @for (section of sections; track section.heading) {
+    <section class="privacy__section">
+      <h2 class="privacy__section-title">{{ section.heading }}</h2>
+      @for (paragraph of section.paragraphs; track paragraph) {
+        <p class="privacy__paragraph">{{ paragraph }}</p>
+      }
+    </section>
+  }
+</article>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Chécalo">
+  <rect width="512" height="512" rx="96" fill="#782f40"/>
+  <rect x="64" y="64" width="384" height="384" rx="64" fill="#faf8f5"/>
+  <path d="M150 262 L224 336 L366 180"
+        fill="none" stroke="#782f40" stroke-width="54"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

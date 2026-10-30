@@ -1,0 +1,13 @@
+// EditorialSignatureComponent — rúbrica editorial propia (Req 9.6).
+// Hereda el color del contexto (currentColor); sin color de marca fijo.
+
+:host {
+  display: inline-flex;
+  line-height: 0;
+  color: inherit;
+}
+
+.app-editorial-signature {
+  display: block;
+  color: inherit;
+}

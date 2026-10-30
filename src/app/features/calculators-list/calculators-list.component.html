@@ -1,0 +1,41 @@
+<article class="list">
+  <header class="list__header">
+    <h1 class="list__title">Índice de calculadoras</h1>
+    <p class="list__lead">
+      Todas las calculadoras laborales y fiscales. Busca por nombre o abre
+      directamente la que necesitas.
+    </p>
+  </header>
+
+  <div class="list__search">
+    <label class="list__search-label" for="list-search">Buscar calculadora</label>
+    <input
+      id="list-search"
+      class="list__search-input"
+      type="search"
+      name="search"
+      autocomplete="off"
+      placeholder="Finiquito, ISR, aguinaldo..."
+      [ngModel]="term()"
+      (ngModelChange)="onTermChange($event)"
+    />
+  </div>
+
+  @if (hasNoMatches()) {
+    <app-empty-state title="Sin coincidencias" [message]="emptyMessage" />
+  } @else {
+    <ol class="list__index">
+      @for (calculator of filtered(); track calculator.id) {
+        <li class="list__index-item">
+          <a class="list__index-link" [routerLink]="calculatorPath(calculator)">
+            <span class="list__index-name">{{ calculator.name }}</span>
+            <span class="list__index-description">{{ calculator.description }}</span>
+          </a>
+        </li>
+      }
+    </ol>
+  }
+
+  <!-- Sección discreta "Otras herramientas": enlace a otro proyecto propio. -->
+  <app-other-tools class="list__other-tools" />
+</article>

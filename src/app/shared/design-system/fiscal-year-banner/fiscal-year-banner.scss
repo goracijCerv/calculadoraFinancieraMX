@@ -1,0 +1,29 @@
+// FiscalYearBannerComponent — vigencia del año fiscal (Req 17).
+
+:host {
+  display: block;
+}
+
+.fiscal-year-banner__year {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+
+.fiscal-year-banner__year-value {
+  font-family: var(--font-figures);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+// Aviso de desfase: filete rojo y texto de tinta, como nota al margen.
+.fiscal-year-banner__warning {
+  margin: var(--space-2) 0 0;
+  padding: var(--space-2) 0 var(--space-2) var(--space-3);
+  border-left: var(--rule-accent-width) solid var(--rule-accent-color);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+}

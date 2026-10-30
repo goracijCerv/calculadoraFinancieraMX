@@ -1,0 +1,99 @@
+// Reset base y reglas globales de normalización del sistema de diseño.
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  // Evita desbordes horizontales sin recortar posicionados fijos/sticky
+  // (estándar anti-slop: `clip`, nunca `hidden` ni `100vw`).
+  overflow-x: clip;
+}
+
+body {
+  min-height: 100vh;
+  // Atmósfera: base con un tinte mínimo del primario (identidad sutil, Req 9.1).
+  background-color: var(--atmosphere-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+// Elementos multimedia no desbordan su contenedor (Req 11.3: sin desbordes).
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+// SVG inline heredan el color del token vigente (Req 9.2 iconos Lucide).
+svg {
+  fill: currentColor;
+}
+
+// Controles heredan color; sin estilos impuestos por el navegador.
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// --- Indicador de foco visible global (Req 13.3) ---------------------------
+// Se define una sola vez para todos los elementos interactivos. Sólo se muestra
+// ante navegación por teclado (:focus-visible), no al enfocar con el ratón.
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+// Se elimina el outline por defecto sólo cuando NO es foco de teclado, para no
+// perder nunca el indicador accesible.
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// --- Microinteracciones limitadas (Req 9.7) --------------------------------
+// Transiciones ≤300 ms exclusivamente para el cambio de tema (colores de
+// superficie/texto/borde). El recálculo del resultado anima mediante la clase
+// utilitaria `.recalc-transition`. No se anima ningún otro elemento (Req 9.6).
+html[data-theme] body,
+html[data-theme] body * {
+  transition:
+    background-color var(--duration-theme) var(--easing-standard),
+    color var(--duration-theme) var(--easing-standard),
+    border-color var(--duration-theme) var(--easing-standard);
+}
+
+// Transición de recálculo del resultado (aplicada por el componente al mostrar
+// una cifra recalculada). ≤300 ms y con función (feedback del recálculo).
+.recalc-transition {
+  transition:
+    opacity var(--duration-recalc) var(--easing-standard),
+    transform var(--duration-recalc) var(--easing-standard);
+}
+
+// Respeta la preferencia de movimiento reducido: sin microinteracciones.
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme] body,
+  html[data-theme] body *,
+  .recalc-transition {
+    transition: none;
+  }
+}

@@ -1,0 +1,59 @@
+// SkeletonComponent — marcador de carga alineado a la cuadrícula.
+// Sólo tokens aprobados; superficie plana con filete de 1px, radios sutiles
+// (2–4px) y animación limitada a `opacity` (nunca width/height/all).
+
+:host {
+  display: block;
+}
+
+.skeleton {
+  display: block;
+  width: 100%;
+  // Superficie rebajada de marca con filete de 1px: plano, sin sombras.
+  background-color: var(--surface-sunken);
+  border: 0;
+  background-image: repeating-linear-gradient(90deg, var(--rule-soft) 0 8px, transparent 8px 16px);
+  opacity: 1;
+  border-radius: var(--radius-md);
+  // Pulso de carga mediante opacidad (anti-slop: no se anima tamaño ni posición).
+  animation: skeleton-pulse 1.4s var(--easing-standard) infinite;
+}
+
+// Variantes alineadas a las alturas tipográficas de la UI real.
+.skeleton--text {
+  height: var(--font-size-md);
+  border-radius: var(--radius-sm);
+}
+
+.skeleton--title {
+  height: var(--font-size-2xl);
+}
+
+// Alineado al monto héroe (`--font-size-hero`) para no desplazar el layout.
+.skeleton--amount {
+  height: var(--font-size-hero);
+  max-width: 16ch;
+}
+
+.skeleton--block {
+  // La altura la fija el input `height`; el radio de datos nunca excede 4px.
+  border-radius: var(--radius-md);
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+// Sin animación cuando el usuario pide movimiento reducido (Floor Hallmark #7).
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

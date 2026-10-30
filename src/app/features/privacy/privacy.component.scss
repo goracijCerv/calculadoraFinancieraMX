@@ -1,0 +1,75 @@
+// PrivacyComponent — política de privacidad (Req 15.3).
+// SCSS puro + tokens aprobados (var(--...)). Sin gradientes, glow, blobs,
+// glassmorphism, sombras exageradas ni emojis (Req 9.6). Sin desbordes (Req 11.3).
+
+:host {
+  display: block;
+}
+
+.privacy {
+  width: 100%;
+  max-width: var(--reading-max-width);
+  margin: 0;
+  padding: var(--space-5) 0 var(--space-7);
+}
+
+.privacy__header {
+  margin-bottom: var(--space-7);
+}
+
+.privacy__eyebrow {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-accent);
+}
+
+.privacy__title {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--text-accent);
+}
+
+.privacy__lead {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+
+.privacy__section {
+  padding: var(--space-5) 0;
+  border-bottom: var(--rule-width) solid var(--border);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.privacy__section-title {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+}
+
+.privacy__paragraph {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

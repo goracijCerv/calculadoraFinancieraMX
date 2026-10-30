@@ -1,0 +1,38 @@
+<article class="help">
+  <header class="help__header">
+    <h1 class="help__title">Resolvemos tus dudas</h1>
+    <p class="help__lead">
+      Preguntas frecuentes y recursos para aprovechar las calculadoras con
+      confianza.
+    </p>
+  </header>
+
+  <section class="help__section" aria-labelledby="help-faq-heading">
+    <h2 class="help__section-title" id="help-faq-heading">Preguntas frecuentes</h2>
+    <dl class="help__faq">
+      @for (faq of faqs; track faq.question) {
+        <div class="help__faq-item">
+          <dt class="help__faq-question">{{ faq.question }}</dt>
+          <dd class="help__faq-answer">{{ faq.answer }}</dd>
+        </div>
+      }
+    </dl>
+  </section>
+
+  <section class="help__section" aria-labelledby="help-resources-heading">
+    <h2 class="help__section-title" id="help-resources-heading">Guías y recursos</h2>
+    <ul class="help__resources">
+      @for (resource of resources; track resource.path) {
+        <li class="help__resource">
+          <a class="help__resource-link" [routerLink]="resource.path">
+            <span class="help__resource-text">
+              <span class="help__resource-title">{{ resource.title }}</span>
+              <span class="help__resource-description">{{ resource.description }}</span>
+            </span>
+            <app-icon class="help__resource-icon" name="chevron-right" [size]="20" />
+          </a>
+        </li>
+      }
+    </ul>
+  </section>
+</article>

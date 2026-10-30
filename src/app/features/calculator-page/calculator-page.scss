@@ -1,0 +1,177 @@
+// CalculatorPageComponent — plantilla común de calculadora.
+// Formulario como formato impreso; resultado en dos columnas: cifras a la
+// izquierda, explicación y datos del recibo a la derecha.
+
+:host {
+  display: block;
+}
+
+.calculator-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.calculator-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+}
+
+.calculator-page__title {
+  margin: 0;
+  max-width: 16ch;
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  color: var(--text-accent);
+}
+
+.calculator-page__description {
+  margin: 0;
+  max-width: 52ch;
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+
+.calculator-page__subtitle {
+  margin: 0;
+  padding-bottom: var(--space-2);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--accent);
+}
+
+.calculator-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+  max-width: 30rem;
+  padding-top: var(--space-5);
+  border-top: 2px solid var(--accent);
+}
+
+.calculator-page__result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 2px solid var(--accent);
+}
+
+.calculator-page__main,
+.calculator-page__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.calculator-page__main {
+  gap: var(--space-5);
+}
+
+.calculator-page__explanation {
+  margin: 0;
+  max-width: 60ch;
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+}
+
+// Nota de criterio: texto secundario con un filete fino a la izquierda.
+.calculator-page__note {
+  margin: 0;
+  max-width: 60ch;
+  padding-left: var(--space-3);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+  border-left: var(--rule-width) solid var(--rule-strong);
+}
+
+.calculator-page__checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-md);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.calculator-page__checkbox-input {
+  inline-size: var(--space-5);
+  block-size: var(--space-5);
+  accent-color: var(--ink);
+}
+
+.calculator-page__checkbox-label {
+  line-height: var(--line-height-normal);
+}
+
+.calculator-page__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.calculator-page__select-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+
+  span {
+    margin-left: var(--space-1);
+    color: var(--accent);
+  }
+}
+
+.calculator-page__select {
+  width: 100%;
+  padding: var(--space-3);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-md);
+  color: var(--field-text);
+  background-color: var(--field-bg);
+  border: 0;
+  border-bottom: 2px solid var(--accent);
+  border-radius: 0;
+
+  &:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: 0;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.calculator-page__field-help {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+
+.calculator-page__actions {
+  display: flex;
+  gap: var(--space-4);
+}
+
+// Escritorio: cifras a la izquierda, lectura a la derecha.
+@media (min-width: 64rem) {
+  .calculator-page__result {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    column-gap: var(--space-8);
+    align-items: start;
+  }
+}

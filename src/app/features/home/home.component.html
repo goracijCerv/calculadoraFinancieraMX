@@ -1,0 +1,67 @@
+<article class="home">
+  <section class="home__hero">
+    <div class="home__hero-copy">
+      <h1 class="home__title">{{ heroTitle }}</h1>
+      <p class="home__lead">{{ heroLead }}</p>
+      <div class="home__actions">
+        <a class="home__button" routerLink="/calculadoras/finiquito">Calcular mi finiquito</a>
+        <a class="home__link" routerLink="/calculadoras">Ver todas las calculadoras</a>
+      </div>
+    </div>
+
+    @if (example(); as result) {
+      <aside class="home__estimate" aria-labelledby="home-estimate-heading">
+        <h2 class="home__estimate-title" id="home-estimate-heading">Ejemplo de finiquito</h2>
+        <p class="home__estimate-caption">{{ exampleCaption }} No es tu cálculo.</p>
+
+        <dl class="home__estimate-rows">
+          @for (item of result.breakdown; track item.concept) {
+            <div class="home__estimate-row">
+              <dt>{{ item.concept }}</dt>
+              <dd class="home__figure">
+                {{ item.amount | currency: 'MXN' : 'symbol-narrow' : '1.2-2' }}
+              </dd>
+            </div>
+          }
+        </dl>
+
+        <div class="home__estimate-total">
+          <span class="home__estimate-total-label">Total estimado</span>
+          <span class="home__estimate-total-amount home__figure">
+            {{ result.total | currency: 'MXN' : 'symbol-narrow' : '1.2-2' }}
+          </span>
+        </div>
+      </aside>
+    }
+  </section>
+
+  <section class="home__section" aria-labelledby="home-main-heading">
+    <h2 class="home__section-title" id="home-main-heading">Lo que te corresponde</h2>
+    <ol class="home__index">
+      @for (calculator of mainCalculators; track calculator.id) {
+        <li class="home__index-item">
+          <a class="home__index-link" [routerLink]="calculatorPath(calculator)">
+            <span class="home__index-name">{{ calculator.name }}</span>
+            <span class="home__index-description">{{ calculator.description }}</span>
+            <span class="home__index-action" aria-hidden="true">Calcular</span>
+          </a>
+        </li>
+      }
+    </ol>
+  </section>
+
+  <section class="home__section" aria-labelledby="home-tools-heading">
+    <h2 class="home__section-title" id="home-tools-heading">Sueldo e impuestos</h2>
+    <ol class="home__index">
+      @for (tool of additionalTools; track tool.id) {
+        <li class="home__index-item">
+          <a class="home__index-link" [routerLink]="calculatorPath(tool)">
+            <span class="home__index-name">{{ tool.name }}</span>
+            <span class="home__index-description">{{ tool.description }}</span>
+            <span class="home__index-action" aria-hidden="true">Calcular</span>
+          </a>
+        </li>
+      }
+    </ol>
+  </section>
+</article>

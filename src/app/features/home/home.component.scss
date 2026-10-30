@@ -1,0 +1,322 @@
+// HomeComponent — portada (Req 1.1). Sin desbordes horizontales (Req 11.3).
+//
+// Hero asimétrico 60/40 y filas táctiles. Luz: bisel interior de 1px en el borde
+// superior de las cajas elevadas. Interacción: elevación de 1px a 2px al pasar el
+// cursor y compresión a 0.98 al pulsar. Todas las cifras en tabular-nums,
+// alineadas a la derecha.
+
+:host {
+  display: block;
+
+  // Ritmo: un solo padding interno para todas las cajas.
+  --box-pad: var(--space-5);
+  --lift-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.home {
+  width: 100%;
+}
+
+// --- Hero 60 / 40 ------------------------------------------------------------
+
+.home__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  align-items: start;
+  column-gap: var(--space-8);
+  row-gap: var(--space-7);
+  padding-block: var(--space-6) var(--space-8);
+}
+
+.home__hero-copy {
+  min-width: 0;
+}
+
+.home__title {
+  margin: 0 0 var(--space-5);
+  font-size: var(--font-size-display);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  color: var(--text-accent);
+}
+
+.home__lead {
+  margin: 0 0 var(--space-6);
+  max-width: 44ch;
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+
+.home__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-5);
+}
+
+// Botón principal de marca: vino sólido.
+.home__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  color: var(--accent-contrast);
+  text-decoration: none;
+  background-color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-rest);
+  transition:
+    transform 150ms var(--lift-ease),
+    box-shadow 150ms var(--lift-ease);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: none;
+  }
+}
+
+.home__link {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25em;
+
+  &:hover {
+    color: var(--text-accent);
+  }
+}
+
+// --- Tarjeta de estimación: bloque plano y nítido ------------------------------
+
+.home__estimate {
+  min-width: 0;
+  padding: var(--box-pad);
+  background-color: var(--surface-raised);
+  border: var(--rule-width) solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--bevel-top);
+}
+
+.home__estimate-title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+}
+
+.home__estimate-caption {
+  margin: 0 0 var(--space-4);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+
+.home__estimate-rows {
+  margin: 0 0 var(--space-4);
+  padding: 0;
+}
+
+// Separadores punteados entre conceptos.
+.home__estimate-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+  border-bottom: var(--rule-width) dotted var(--rule-strong);
+
+  dt {
+    min-width: 0;
+    color: var(--text-primary);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+// Total: caja de vino sólido.
+.home__estimate-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--box-pad);
+  margin-inline: calc(var(--box-pad) * -1);
+  margin-bottom: calc(var(--box-pad) * -1);
+  color: var(--accent-contrast);
+  background-color: var(--accent);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.home__estimate-total-label {
+  font-weight: var(--font-weight-semibold);
+}
+
+.home__estimate-total-amount {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+// Cifras: tabular-nums, alineadas a la derecha.
+.home__figure {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.home__estimate-row .home__figure {
+  font-family: var(--font-figures);
+  font-weight: 600;
+}
+
+// --- Filas de calculadoras -----------------------------------------------------
+
+.home__section {
+  margin-top: var(--space-7);
+}
+
+.home__section-title {
+  margin: 0 0 var(--space-4);
+  padding-bottom: var(--space-3);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  border-bottom: 2px solid var(--accent);
+}
+
+.home__index {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// Fila táctil: calculadora | descripción | acción.
+.home__index-link {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-4);
+  padding: var(--space-4) var(--box-pad);
+  color: inherit;
+  text-decoration: none;
+  background-color: var(--surface-raised);
+  border: var(--rule-width) solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--bevel-top), var(--shadow-rest);
+  transition:
+    transform 150ms var(--lift-ease),
+    box-shadow 150ms var(--lift-ease),
+    border-color 150ms var(--lift-ease);
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-1px);
+    border-color: var(--accent);
+    box-shadow: var(--bevel-top), var(--shadow-lift);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: var(--bevel-top);
+  }
+}
+
+.home__index-name {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  color: var(--text-primary);
+}
+
+.home__index-description {
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+
+// Botón de la fila: contorno en reposo, vino sólido cuando la fila se activa.
+.home__index-action {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-accent);
+  background-color: transparent;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  transition:
+    background-color 150ms var(--lift-ease),
+    color 150ms var(--lift-ease);
+}
+
+.home__index-link:hover .home__index-action,
+.home__index-link:focus-visible .home__index-action {
+  color: var(--accent-contrast);
+  background-color: var(--accent);
+}
+
+// --- Responsive ------------------------------------------------------------------
+
+@media (max-width: 63.9375rem) {
+  .home__hero {
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: var(--space-4) var(--space-7);
+  }
+
+  .home__estimate {
+    max-width: 32rem;
+  }
+}
+
+@media (max-width: 47.9375rem) {
+  :host {
+    --box-pad: var(--space-4);
+  }
+
+  .home__index-link {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: var(--space-1);
+  }
+
+  .home__index-description {
+    grid-column: 1 / -1;
+  }
+
+  .home__index-action {
+    grid-row: 1;
+    grid-column: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home__button,
+  .home__index-link,
+  .home__index-action {
+    transition: none;
+  }
+
+  .home__button:hover,
+  .home__button:active,
+  .home__index-link:hover,
+  .home__index-link:focus-visible,
+  .home__index-link:active {
+    transform: none;
+  }
+}

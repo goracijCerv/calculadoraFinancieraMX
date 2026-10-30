@@ -1,0 +1,15 @@
+// EditorialRuleComponent — filete de acento propio (Req 9.3, 9.6).
+// Hereda el color del contexto (currentColor); no fija color de marca.
+
+:host {
+  display: inline-flex;
+  line-height: 0;
+  // Por defecto se tiñe con el color del acento editorial (vino) cuando el
+  // contenedor no define otro color de texto.
+  color: var(--rule-accent-color);
+}
+
+.app-editorial-rule {
+  display: block;
+  color: inherit;
+}

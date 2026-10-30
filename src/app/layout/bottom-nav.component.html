@@ -1,0 +1,22 @@
+<nav class="app-bottom-nav" aria-label="Navegación principal">
+  <ul class="app-bottom-nav__list">
+    @for (link of links; track link.path) {
+      <li class="app-bottom-nav__item">
+        <a
+          class="app-bottom-nav__link"
+          [routerLink]="link.path"
+          routerLinkActive="is-active"
+          [routerLinkActiveOptions]="{ exact: link.exact }"
+          #rla="routerLinkActive"
+          [attr.aria-current]="rla.isActive ? 'page' : null"
+        >
+          <app-icon class="app-bottom-nav__icon" [name]="link.icon" [size]="24" />
+          <span class="app-bottom-nav__label">{{ link.label }}</span>
+        </a>
+      </li>
+    }
+    <li class="app-bottom-nav__item">
+      <app-theme-toggle class="app-bottom-nav__theme" [showLabel]="true" />
+    </li>
+  </ul>
+</nav>

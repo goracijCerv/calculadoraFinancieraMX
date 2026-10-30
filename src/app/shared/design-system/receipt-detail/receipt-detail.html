@@ -1,0 +1,10 @@
+<dl class="receipt-detail">
+  <div class="receipt-detail__row">
+    <dt class="receipt-detail__label">{{ folioLabel() }}</dt>
+    <dd class="receipt-detail__value receipt-detail__value--folio">{{ folio() }}</dd>
+  </div>
+  <div class="receipt-detail__row">
+    <dt class="receipt-detail__label">{{ dateLabel() }}</dt>
+    <dd class="receipt-detail__value">{{ date() | date: dateFormat() }}</dd>
+  </div>
+</dl>

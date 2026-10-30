@@ -1,0 +1,7 @@
+<section class="empty-state" role="status" aria-live="polite">
+  @if (title(); as heading) {
+    <p class="empty-state__title">{{ heading }}</p>
+  }
+  <p class="empty-state__message">{{ message() }}</p>
+  <ng-content></ng-content>
+</section>

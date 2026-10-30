@@ -1,0 +1,7 @@
+/* Estilos globales de CalculaFácil.
+   SCSS puro con CSS custom properties; sin Tailwind ni frameworks de utilidades CSS. */
+
+@use 'styles/tokens';
+@use 'styles/themes';
+@use 'styles/reset';
+@use 'styles/typography';

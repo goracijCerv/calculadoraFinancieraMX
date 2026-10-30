@@ -1,0 +1,80 @@
+// BottomNavComponent — barra inferior para móvil (Req 11.2). Oculta por
+// defecto; visible solo en móvil (Req 11.1). Sin desbordes (Req 11.3).
+
+// El host no genera caja: así el `sticky` de la barra se ancla al viewport y no
+// a un contenedor en línea del alto de la propia barra.
+:host {
+  display: contents;
+}
+
+.app-bottom-nav {
+  display: none;
+}
+
+.app-bottom-nav__list {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+.app-bottom-nav__item {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.app-bottom-nav__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-top: 3px solid transparent;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+
+  &.is-active {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+    border-top-color: var(--accent);
+  }
+}
+
+.app-bottom-nav__theme {
+  display: block;
+}
+
+.app-bottom-nav__icon {
+  display: block;
+}
+
+// El destino activo tiñe su icono con el acento.
+.app-bottom-nav__link.is-active .app-bottom-nav__icon {
+  color: var(--text-accent);
+}
+
+.app-bottom-nav__label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 47.9375rem) {
+  .app-bottom-nav {
+    display: block;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    width: 100%;
+    border-top: var(--rule-width) solid var(--border);
+    background-color: var(--surface-base);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+}

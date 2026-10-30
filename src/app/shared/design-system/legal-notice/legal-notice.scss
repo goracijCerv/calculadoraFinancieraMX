@@ -1,0 +1,15 @@
+// LegalNoticeComponent — aviso legal con texto exacto (Req 3.5).
+// Solo tokens aprobados; SCSS puro, sin emojis ni efectos excluidos (Req 9.6).
+
+:host {
+  display: block;
+}
+
+.legal-notice {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}

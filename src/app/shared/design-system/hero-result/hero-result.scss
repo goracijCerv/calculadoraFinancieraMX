@@ -1,0 +1,73 @@
+// HeroResultComponent — monto héroe (Req 3.2, 9.3).
+// El importe va en tipografía de cifras sobre marcatextos y cierra con el
+// subrayado doble que en contabilidad señala un total.
+
+:host {
+  display: block;
+}
+
+.hero-result {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+// Filete rojo corto que antecede a la etiqueta (Req 9.3).
+.hero-result__filete {
+  display: block;
+  width: var(--space-7);
+  height: var(--rule-accent-width);
+  background-color: var(--rule-accent-color);
+}
+
+.hero-result__label {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+}
+
+// --font-size-hero (5rem) es 2.5× --font-size-2xl; en pantallas angostas se
+// reduce para que la cifra completa quepa sin desbordar (Req 11.3).
+.hero-result__amount {
+  --amount-size: clamp(2.5rem, 12vw, var(--font-size-hero));
+
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  max-width: 100%;
+  padding-bottom: var(--space-1);
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--mark-text);
+  font-variant-numeric: tabular-nums;
+  border-bottom: 6px double var(--text-primary);
+}
+
+.hero-result__integer {
+  padding-inline: 0.08em;
+  font-size: var(--amount-size);
+  // Marcatextos bajo la cifra.
+  box-shadow: inset 0 -0.3em 0 var(--mark);
+}
+
+.hero-result__currency {
+  margin-right: 0.12em;
+  font-size: calc(var(--amount-size) * 0.4);
+  color: var(--text-primary);
+}
+
+.hero-result__fraction {
+  font-size: calc(var(--amount-size) * 0.4);
+  color: var(--text-primary);
+}
+
+// Sufijo de unidad (p. ej. "días") junto a la cifra.
+.hero-result__suffix {
+  margin-left: 0.2em;
+  font-size: calc(var(--amount-size) * 0.4);
+  color: var(--text-primary);
+}

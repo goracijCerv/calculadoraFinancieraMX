@@ -1,0 +1,94 @@
+// Temas claro/oscuro seleccionados por atributo [data-theme] (Req 10.2, 10.6).
+//
+// Paleta de marca original (Req 9.1): vino #782F40, gris lavanda #E8E1E8,
+// blanco #FFFFFF, grafito #302830, gris secundario #706A70, bordes #E5E0E2.
+// Oscuro: superficies derivadas de vino/grafito, no una inversión del claro.
+
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  // Superficies
+  --surface-base: #faf8f5; // crema cálido
+  --surface-raised: #ffffff;
+  --surface-sunken: #e8e1e8; // lavanda
+  --surface-accent-soft: #e8e1e8;
+
+  // Texto
+  --text-primary: #302830; // grafito
+  --text-secondary: #655f65; // gris de marca oscurecido para contraste >=4.5:1
+  --text-on-accent: #ffffff;
+  --text-accent: #782f40; // vino
+
+  // Acento
+  --accent: #782f40;
+  --accent-contrast: #ffffff;
+  --ink: #782f40; // acción primaria
+  --ink-contrast: #ffffff;
+  --mark: #e8e1e8; // resalte: lavanda
+  --mark-text: #302830; // texto sobre el resalte
+
+  // Líneas
+  --border: #e5e0e2;
+  --rule-color: #e5e0e2;
+  --rule-soft: #efebed;
+  --rule-strong: #706a70; // puntos guía y filetes de énfasis
+  --margin-line: #782f40;
+
+  // Controles
+  --field-bg: #ffffff;
+  --field-border: #706a70;
+  --field-text: #302830;
+  --field-placeholder: #655f65;
+
+  --atmosphere-base: var(--surface-base);
+  --surface-panel: transparent;
+  --surface-bevel: none;
+
+  // Luz y elevación: bisel interior de 1px en el borde superior y sombra limpia (offset + blur suave).
+  --bevel-top: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --shadow-rest: 0 1px 2px rgba(48, 40, 48, 0.08);
+  --shadow-lift: 0 2px 6px rgba(48, 40, 48, 0.12);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --surface-base: #211b21;
+  --surface-raised: #302830; // grafito de marca
+  --surface-sunken: #1a151a;
+  --surface-accent-soft: #3a2e3a;
+
+  --text-primary: #e8e1e8;
+  --text-secondary: #b4acb4;
+  --text-on-accent: #ffffff;
+  --text-accent: #d8a7b4; // vino aclarado
+
+  --accent: #a6586a;
+  --accent-contrast: #ffffff;
+  --ink: #a6586a;
+  --ink-contrast: #ffffff;
+  --mark: #5b3040; // vino profundo derivado de la marca
+  --mark-text: #e8e1e8;
+
+  --border: #4a3f4a;
+  --rule-color: #4a3f4a;
+  --rule-soft: #3a2f3a;
+  --rule-strong: #948b94;
+  --margin-line: #a6586a;
+  --rule-accent-color: var(--accent);
+  --focus-ring-color: #d8a7b4;
+
+  --field-bg: #2a222a;
+  --field-border: #948b94;
+  --field-text: #e8e1e8;
+  --field-placeholder: #948b94;
+
+  --atmosphere-base: var(--surface-base);
+  --surface-panel: transparent;
+  --surface-bevel: none;
+
+  --bevel-top: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --shadow-rest: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-lift: 0 2px 6px rgba(0, 0, 0, 0.45);
+}

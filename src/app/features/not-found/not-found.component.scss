@@ -1,0 +1,68 @@
+// NotFoundComponent — página 404 (Req 12.1).
+// SCSS puro + tokens aprobados (var(--...)). Sin gradientes, glow, blobs,
+// glassmorphism, sombras exageradas ni emojis (Req 9.6). Sin desbordes (Req 11.3).
+
+:host {
+  display: block;
+}
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: var(--reading-max-width);
+  margin: 0;
+  padding: var(--space-6) 0 var(--space-7);
+}
+
+.not-found__code {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 22vw, 12rem);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--text-accent);
+}
+
+.not-found__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--text-primary);
+}
+
+.not-found__message {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+}
+
+.not-found__home {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-accent);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.not-found__home-icon {
+  display: inline-flex;
+}

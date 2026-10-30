@@ -1,0 +1,38 @@
+// ReceiptDetailComponent — folio y fecha del cálculo (Req 3.7).
+
+:host {
+  display: block;
+}
+
+.receipt-detail {
+  margin: 0;
+  padding-top: var(--space-3);
+  border-top: var(--rule-width) dashed var(--rule-color);
+}
+
+.receipt-detail__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: var(--space-1) 0;
+}
+
+.receipt-detail__label {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.receipt-detail__value {
+  margin: 0;
+  font-family: var(--font-figures);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+.receipt-detail__value--folio {
+  font-variant-numeric: tabular-nums;
+}

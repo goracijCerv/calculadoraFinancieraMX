@@ -1,0 +1,56 @@
+// ThemeToggleComponent — alternancia claro/oscuro (Req 10.1).
+// Transición limitada al cambio de tema, ≤300 ms (Req 9.7).
+
+.app-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-7);
+  height: var(--space-7);
+  padding: 0;
+  background-color: transparent;
+  border: 2px solid var(--text-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-theme) var(--easing-standard),
+    color var(--duration-theme) var(--easing-standard);
+
+  &:hover {
+    background-color: var(--mark);
+    color: var(--mark-text);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+}
+
+.app-theme-toggle__icon {
+  display: block;
+  fill: none; // icono de trazo; anula el `svg { fill: currentColor }` global
+}
+
+// Variante con etiqueta, para la barra inferior móvil: mismo aspecto que un
+// destino de navegación (icono arriba, texto abajo), sin caja.
+.app-theme-toggle--stacked {
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+  height: auto;
+  padding: var(--space-2) var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  background-color: transparent;
+  border: 0;
+  border-top: 3px solid transparent;
+  border-radius: 0;
+
+  &:hover {
+    background-color: transparent;
+    color: var(--text-primary);
+  }
+}

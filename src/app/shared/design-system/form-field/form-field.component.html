@@ -1,0 +1,31 @@
+<div class="form-field" [class.form-field--invalid]="hasError()">
+  <label class="form-field__label" [for]="inputId">
+    {{ label() }}
+    @if (required()) {
+      <span class="form-field__required" aria-hidden="true">*</span>
+    }
+  </label>
+
+  <input
+    class="form-field__input"
+    [id]="inputId"
+    [type]="type()"
+    [value]="value()"
+    [placeholder]="placeholder()"
+    [disabled]="disabled()"
+    [required]="required()"
+    [attr.aria-describedby]="describedBy()"
+    [attr.aria-invalid]="hasError() ? 'true' : null"
+    (click)="handleClick($event)"
+    (input)="handleInput($event)"
+    (blur)="handleBlur()"
+  />
+
+  @if (hasHelp()) {
+    <p class="form-field__help" [id]="helpId">{{ helpText() }}</p>
+  }
+
+  @if (hasError()) {
+    <p class="form-field__error" [id]="errorId" role="alert">{{ errorMessage() }}</p>
+  }
+</div>

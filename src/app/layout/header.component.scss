@@ -1,0 +1,84 @@
+// HeaderComponent — encabezado (Req 1.2, 11.1). Visible en escritorio/tablet;
+// en móvil lo reemplaza BottomNavComponent (Req 11.2).
+
+.app-header {
+  width: 100%;
+  background-color: var(--surface-base);
+  border-bottom: var(--rule-width) solid var(--border);
+}
+
+.app-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0;
+  padding: var(--space-3) var(--space-5);
+  // Alinea marca y navegación con el contenido, a la derecha del margen.
+  padding-left: calc(var(--space-5) + var(--space-7));
+}
+
+.app-header__brand {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  text-decoration: none;
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.app-header__nav {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.app-header__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.app-header__link {
+  display: inline-block;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding-block: var(--space-1);
+  // Enlace activo: filete de acento bajo el texto; al pasar el cursor, resalte lavanda.
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size 150ms var(--easing-standard);
+
+  &:hover {
+    color: var(--text-primary);
+    background-size: 100% 2px;
+  }
+
+  &.is-active {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+    background-size: 100% 2px;
+  }
+}
+
+.app-header__theme {
+  flex: 0 0 auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-header__link {
+    transition: none;
+  }
+}
+
+@media (max-width: 47.9375rem) {
+  .app-header {
+    display: none;
+  }
+}
